@@ -1,0 +1,11 @@
+[package]
+name = "parquet-processor"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+arrow = "54.0.0"
+parquet = "54.0.0"
+serde = { version = "1.0.217", features = ["derive"] }
+serde_yaml = "0.9.34"
+tokio = { version = "1.43.0", features = ["full"] }

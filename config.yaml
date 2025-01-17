@@ -1,0 +1,8 @@
+input: "data/input.parquet"
+output: "data/input.parquet"
+transformations:
+  - column: "age"
+    action: "multiply"
+    value: 2
+  - column:
+    action: "uppercase"
