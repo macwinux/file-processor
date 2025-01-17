@@ -78,6 +78,9 @@ async fn main() {
     }
 
    let records = read_parquet("example.parquet").unwrap();
+   
+   let schema = records[0].schema();
+   let records_write = records.clone();
    for record in records {
         println!("Records {}", record.num_rows());
         for row in 0..record.num_rows() {
@@ -91,4 +94,5 @@ async fn main() {
             println!("\tName: {}", value_name);
         }
    }
+   write_parquet("output.parquet", schema, records_write).unwrap();
 }
