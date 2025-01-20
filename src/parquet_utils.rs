@@ -51,8 +51,8 @@ mod test {
     fn write_parquet_and_read() {
         write_example_parquet("example.parquet");
         let records = read_parquet("example.parquet").unwrap();
-        let result_names = vec!["Pepe", "Juan", "Luis"];
-        let result_ages = vec![11, 22, 33];
+        let result_names = ["Pepe", "Juan", "Luis"];
+        let result_ages = [11, 22, 33];
         for record in records {
             for row in 0..record.num_rows() {
                 let column_age =  record.column_by_name("age").unwrap().as_any().downcast_ref::<Int64Array>().unwrap();
