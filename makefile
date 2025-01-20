@@ -3,3 +3,4 @@ run:
 build:
 	cargo test
 	cargo build
+
