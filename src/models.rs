@@ -1,17 +1,13 @@
 pub mod configurations{
     use serde::Deserialize;
+    pub type Error = Box<dyn std::error::Error>;
+    pub type Result<T> = std::result::Result<T,Error>;
 
-    #[derive(Debug, Deserialize)]
-    pub struct Transformation {
-        pub column: String,
-        pub action: String,
-        pub value: Option<f64>,
-    }
-    
     #[derive(Debug, Deserialize)]
     pub struct Config {
         pub input: String,
         pub output: String,
-        pub transformations: Vec<Transformation>,
+        pub sql: String,
+        pub table: String,
     }
 }

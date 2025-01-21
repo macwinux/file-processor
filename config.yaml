@@ -1,8 +1,4 @@
-input: "data/input.parquet"
-output: "data/input.parquet"
-transformations:
-  - column: "age"
-    action: "multiply"
-    value: 2
-  - column:
-    action: "uppercase"
+input: "data/example.parquet"
+output: "data/output.parquet"
+sql: "SELECT upper(names) as name, age*2 as age from "
+table: "input_table"

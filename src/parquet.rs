@@ -4,9 +4,11 @@ pub mod utils {
     use parquet::arrow::ArrowWriter;
     use std::sync::Arc;
     use arrow::datatypes::Schema;
+
+    use crate::models;
     
-    
-    pub fn read_parquet(path: &str) -> Result<Vec<RecordBatch>, Box<dyn std::error::Error>> {
+
+    pub fn read_parquet(path: &str) -> models::configurations::Result<Vec<RecordBatch>> {
         let file = std::fs::File::open(path)?;
         let builder = ParquetRecordBatchReaderBuilder::try_new(file).unwrap();
         println!("Converted arrow schema is: {}", builder.schema());
@@ -15,6 +17,7 @@ pub mod utils {
     
     }
     
+    #[allow(dead_code)]
     pub fn write_parquet (
         path: &str,
         schema: Arc<Schema>,
