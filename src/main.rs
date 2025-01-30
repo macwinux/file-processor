@@ -24,7 +24,7 @@ async fn main() {
     let output_path = yaml.output.path.clone();
     let ctx = Rc::new(SessionContext::new());
 
-    let transformer: Transformer = Transformer::new(yaml.input, yaml.output, Rc::clone(&ctx)).await;
+    let transformer: Transformer = Transformer::new(yaml.input, yaml.output, yaml.table, Rc::clone(&ctx)).await;
     
     let check = transformer.check().await;
     match check {
@@ -33,9 +33,9 @@ async fn main() {
     };
     //ctx.register_parquet("input_table", input_path,ParquetReadOptions::default()).await.unwrap();
     println!("Ejectuando consulta: {}", yaml.sql);
-    let query = format!("{}{}",yaml.sql,yaml.table);
-    let df = ctx.sql(&query).await.unwrap();
-
+    //let query = format!("{}{}",yaml.sql,yaml.table);
+    //let df = ctx.sql(&query).await.unwrap();
+    let df = transformer.transform(yaml.sql).await;
     df.write_parquet(&output_path, DataFrameWriteOptions::default(),None).await.unwrap();
 
    let records:Vec<RecordBatch> = parquet::utils::read_parquet(&output_path).unwrap();

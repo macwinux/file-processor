@@ -4,7 +4,7 @@ pub mod transformer {
     use std::rc::Rc;
 
     use crate::models::configurations::{File,FormatError, Result};
-    use datafusion::prelude::{ParquetReadOptions, SessionContext};
+    use datafusion::prelude::{DataFrame, ParquetReadOptions, SessionContext};
     //pub trait CheckerFiles {
     //    async fn new(input: File, output: File, context: Rc<SessionContext>) -> Transformer;
     //    async fn check(&self) -> Result<()>;
@@ -16,12 +16,13 @@ pub mod transformer {
         pub input: File,
         pub output: File,
         pub context: Rc<SessionContext>,
+        pub table: String,
     }
 
     impl Transformer {
 
-        pub async fn new(input: File, output: File, context: Rc<SessionContext>) -> Transformer {
-            Transformer{input, output, context}
+        pub async fn new(input: File, output: File, table: String, context: Rc<SessionContext>) -> Transformer {
+            Transformer{input, output, context, table}
         }
 
         pub async fn check(&self) -> Result<()> {
@@ -29,7 +30,7 @@ pub mod transformer {
             match value {
                 "parquet" => {
                     println!("Table registered");
-                    self.context.register_parquet("input_table", self.input.path.clone(),ParquetReadOptions::default()).await.unwrap();
+                    self.context.register_parquet(&self.table, &self.input.path,ParquetReadOptions::default()).await.unwrap();
                     Ok(())
                 }
                 _ => {
@@ -38,9 +39,9 @@ pub mod transformer {
             }
         }
         
-        #[allow(dead_code)]
-        async fn transform(&self) {
-            
+        pub async fn transform(&self, query: String) -> DataFrame {
+            let sql = format!("{}{}",&query, &self.table);
+            self.context.as_ref().sql(&sql).await.unwrap()
         }
     }
 
