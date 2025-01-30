@@ -36,7 +36,7 @@ pub mod utils {
     pub fn write_example_parquet(path: &str) {
         let col_ages = Arc::new(Int64Array::from_iter_values([11, 22, 33])) as ArrayRef;
         let col_names = Arc::new(StringArray::from_iter_values(["Pepe", "Juan", "Luis"])) as ArrayRef;
-        let to_write = RecordBatch::try_from_iter([("age", col_ages), ("names", col_names)]).unwrap();
+        let to_write = RecordBatch::try_from_iter([("age", col_ages), ("name", col_names)]).unwrap();
         let file = std::fs::File::create(path).unwrap();
         let mut writer = ArrowWriter::try_new(file, to_write.schema(), None).unwrap();
         writer.write(&to_write).unwrap();
@@ -59,7 +59,7 @@ mod test {
         for record in records {
             for row in 0..record.num_rows() {
                 let column_age =  record.column_by_name("age").unwrap().as_any().downcast_ref::<Int64Array>().unwrap();
-                let column_name =  record.column_by_name("names").unwrap().as_any().downcast_ref::<StringArray>().unwrap();
+                let column_name =  record.column_by_name("name").unwrap().as_any().downcast_ref::<StringArray>().unwrap();
                 let value_age = column_age.value(row);
                 let value_name = column_name.value(row);
                 assert_eq!(value_age,result_ages[row]);

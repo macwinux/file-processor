@@ -1,4 +1,8 @@
-input: "data/example.parquet"
-output: "data/output.parquet"
-sql: "SELECT upper(names) as name, age*2 as age from "
+input: 
+  path: "data/example.parquet"
+  format: "parquet"
+output: 
+  path: "data/output.parquet"
+  format: "parquet"
+sql: "SELECT upper(name) as name, age*2 as age from "
 table: "input_table"
