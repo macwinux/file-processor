@@ -11,6 +11,7 @@ pub mod transformer {
     //    async fn transform(&self) -> ();
     //}
 
+    #[allow(dead_code)]
     pub struct Transformer{
         pub input: File,
         pub output: File,
@@ -32,11 +33,13 @@ pub mod transformer {
                     Ok(())
                 }
                 _ => {
-                    Err(Box::new(FormatError(String::from(format!("No format {} allowed", value)))))
+                    Err(Box::new(FormatError(format!("No format {} allowed", value))))
                 }
             }
         }
-        async fn transform(&self) -> () {
+        
+        #[allow(dead_code)]
+        async fn transform(&self) {
             
         }
     }
